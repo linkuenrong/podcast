@@ -15,7 +15,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .pod-author { font-size: 13px; color: #666; margin-top: 3px; }
 .now-playing { background: #fff; border: 1px solid #e5e5e5; border-radius: 14px; padding: 1.25rem; margin-bottom: 1rem; }
 .np-label { font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
-.np-title { font-size: 15px; font-weight: 500; margin-bottom: 14px; line-height: 1.4; }
+.np-title { font-size: 15px; font-weight: 500; margin-bottom: 14px; line-height: 1.4; min-height: 42px; }
 .progress-bar { width: 100%; height: 4px; accent-color: #2563eb; cursor: pointer; }
 .time-row { display: flex; justify-content: space-between; font-size: 12px; color: #888; margin: 6px 0 14px; }
 .controls { display: flex; align-items: center; justify-content: center; gap: 24px; }
@@ -31,10 +31,10 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .ep-info { flex: 1; min-width: 0; }
 .ep-name { font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ep-date { font-size: 12px; color: #888; margin-top: 2px; }
-.ep-dur { font-size: 12px; color: #aaa; flex-shrink: 0; }
-.loading { text-align: center; padding: 2rem; color: #888; font-size: 14px; }
 .speed-btn { background: #f0f0f0; border: none; border-radius: 6px; padding: 4px 8px; font-size: 12px; cursor: pointer; color: #444; }
 .speed-btn:hover { background: #e0e0e0; }
+.msg { text-align: center; padding: 2rem; color: #888; font-size: 14px; }
+.err { color: #dc2626; font-size: 13px; margin-top: 8px; line-height: 1.6; text-align: left; background: #fef2f2; border-radius: 8px; padding: 10px 14px; }
 </style>
 </head>
 <body>
@@ -47,7 +47,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
       </svg>
     </div>
     <div>
-      <div class="pod-title" id="pod-title">載入中...</div>
+      <div class="pod-title" id="pod-title">私人播客</div>
       <div class="pod-author" id="pod-author"></div>
     </div>
   </div>
@@ -65,7 +65,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 .49-4.28"/></svg>
         15
       </button>
-      <button class="play-btn" id="play-btn" onclick="togglePlay()">
+      <button class="play-btn" onclick="togglePlay()">
         <svg id="play-icon" width="22" height="22" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg>
       </button>
       <button class="ctrl-btn" onclick="skip(15)">
@@ -77,110 +77,110 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   </div>
 
   <div class="ep-list" id="ep-list">
-    <div class="loading">載入集數中...</div>
+    <div class="msg">載入集數中...</div>
   </div>
 </div>
 
 <audio id="audio"></audio>
 
 <script>
-const FEED = 'https://linkuenrong.github.io/podcast/feed.xml';
-const PROXY = 'https://api.allorigins.win/get?url=';
 const audio = document.getElementById('audio');
 const speeds = [1, 1.25, 1.5, 2];
-let speedIdx = 0;
-let episodes = [];
-let currentIdx = -1;
+let speedIdx = 0, episodes = [], currentIdx = -1;
 
 async function loadFeed() {
   try {
-    const res = await fetch(PROXY + encodeURIComponent(FEED));
-    const data = await res.json();
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(data.contents, 'text/xml');
+    const res = await fetch('feed.xml', { cache: 'no-cache' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const text = await res.text();
+    const xml = new DOMParser().parseFromString(text, 'text/xml');
+    if (xml.querySelector('parsererror')) throw new Error('XML 格式錯誤');
     const ch = xml.querySelector('channel');
-    document.getElementById('pod-title').textContent = ch.querySelector('title')?.textContent || '我的播客';
-    document.title = ch.querySelector('title')?.textContent || '私人播客';
-    document.getElementById('pod-author').textContent = ch.querySelector('author')?.textContent || '';
+    const title = ch.querySelector('title')?.textContent || '私人播客';
+    document.getElementById('pod-title').textContent = title;
+    document.title = title;
+    const author = ch.querySelector('author')?.textContent
+      || ch.querySelector('itunes\\:author')?.textContent || '';
+    document.getElementById('pod-author').textContent = author;
     const items = [...xml.querySelectorAll('item')];
-    episodes = items.map((item, i) => ({
-      title: item.querySelector('title')?.textContent || '第 ' + (i+1) + ' 集',
-      url: item.querySelector('enclosure')?.getAttribute('url') || '',
-      date: item.querySelector('pubDate')?.textContent || '',
-      desc: item.querySelector('description')?.textContent || ''
+    if (!items.length) {
+      document.getElementById('ep-list').innerHTML = '<div class="msg">尚未有集數</div>';
+      return;
+    }
+    episodes = items.map((el, i) => ({
+      title: el.querySelector('title')?.textContent || '第 ' + (i+1) + ' 集',
+      url:   el.querySelector('enclosure')?.getAttribute('url') || '',
+      date:  el.querySelector('pubDate')?.textContent || ''
     }));
     renderList();
-  } catch(e) {
-    document.getElementById('ep-list').innerHTML = '<div class="loading">無法載入集數，請稍後再試</div>';
-    document.getElementById('pod-title').textContent = '私人播客';
+  } catch (e) {
+    document.getElementById('ep-list').innerHTML =
+      '<div class="msg"><div class="err">' +
+      '載入失敗：' + e.message + '<br><br>' +
+      '請確認：<br>' +
+      '・index.html 和 feed.xml 放在同一個資料夾<br>' +
+      '・透過 GitHub Pages 網址開啟（不是直接開本機檔案）<br>' +
+      '・GitHub Pages 已在 Settings 中開啟' +
+      '</div></div>';
   }
 }
 
 function renderList() {
-  const list = document.getElementById('ep-list');
-  if (!episodes.length) { list.innerHTML = '<div class="loading">尚無集數</div>'; return; }
-  list.innerHTML = episodes.map((ep, i) => `
+  document.getElementById('ep-list').innerHTML = episodes.map((ep, i) => `
     <div class="ep-item ${i===currentIdx?'active':''}" onclick="playEp(${i})">
       <div class="ep-num">${i+1}</div>
       <div class="ep-info">
         <div class="ep-name">${ep.title}</div>
         <div class="ep-date">${ep.date ? new Date(ep.date).toLocaleDateString('zh-TW') : ''}</div>
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 
 function playEp(idx) {
   currentIdx = idx;
-  const ep = episodes[idx];
-  document.getElementById('np-title').textContent = ep.title;
-  audio.src = ep.url;
+  document.getElementById('np-title').textContent = episodes[idx].title;
+  audio.src = episodes[idx].url;
   audio.playbackRate = speeds[speedIdx];
   audio.play();
-  setPlayIcon(true);
+  setIcon(true);
   renderList();
 }
 
 function togglePlay() {
   if (!audio.src) return;
-  if (audio.paused) { audio.play(); setPlayIcon(true); }
-  else { audio.pause(); setPlayIcon(false); }
+  audio.paused ? (audio.play(), setIcon(true)) : (audio.pause(), setIcon(false));
 }
 
-function setPlayIcon(playing) {
-  document.getElementById('play-icon').innerHTML = playing
+function setIcon(p) {
+  document.getElementById('play-icon').innerHTML = p
     ? '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>'
     : '<polygon points="5,3 19,12 5,21"/>';
 }
 
-function skip(sec) { audio.currentTime = Math.max(0, (audio.currentTime||0) + sec); }
+function skip(s) { audio.currentTime = Math.max(0, (audio.currentTime||0) + s); }
 
 function cycleSpeed() {
-  speedIdx = (speedIdx + 1) % speeds.length;
+  speedIdx = (speedIdx+1) % speeds.length;
   audio.playbackRate = speeds[speedIdx];
   document.getElementById('speed-btn').textContent = speeds[speedIdx] + 'x';
 }
 
 function fmtTime(s) {
-  s = Math.floor(s || 0);
-  const m = Math.floor(s / 60);
-  return m + ':' + String(s % 60).padStart(2, '0');
+  s = Math.floor(s||0);
+  return Math.floor(s/60) + ':' + String(s%60).padStart(2,'0');
 }
 
-function seek(val) {
-  if (audio.duration) audio.currentTime = (val / 100) * audio.duration;
-}
+function seek(v) { if (audio.duration) audio.currentTime = (v/100)*audio.duration; }
 
 audio.addEventListener('timeupdate', () => {
-  const pct = audio.duration ? Math.round((audio.currentTime / audio.duration) * 100) : 0;
+  const pct = audio.duration ? Math.round((audio.currentTime/audio.duration)*100) : 0;
   document.getElementById('progress').value = pct;
   document.getElementById('cur-time').textContent = fmtTime(audio.currentTime);
   document.getElementById('dur-time').textContent = fmtTime(audio.duration);
 });
-
 audio.addEventListener('ended', () => {
-  setPlayIcon(false);
-  if (currentIdx < episodes.length - 1) playEp(currentIdx + 1);
+  setIcon(false);
+  if (currentIdx < episodes.length-1) playEp(currentIdx+1);
 });
 
 loadFeed();
