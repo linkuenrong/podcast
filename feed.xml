@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+  xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+  xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>峰值體驗2</title>
+    <description>峰值體驗2各章語章探索</description>
+    <language>zh-tw</language>
+    <author>AI</author>
+    <link>https://linkuenrong.github.io/podcast/feed.xml</link>
+    <itunes:author>AI</itunes:author>
+    <itunes:explicit>false</itunes:explicit>
+  <item>
+    <title>1.爆品竟然會破產</title>
+    <description></description>
+    <enclosure url="https://drive.google.com/file/d/1tSOXlG6wounTl9MuLTmtHw6I6yNGS_Rp/view?usp=sharing" length="0" type="audio/mpeg"/>
+    <guid isPermaLink="false">https://drive.google.com/file/d/1tSOXlG6wounTl9MuLTmtHw6I6yNGS_Rp/view?usp=sharing</guid>
+    <pubDate>Fri, 17 Apr 2026 12:00:00 GMT</pubDate>
+    <itunes:duration>00:00:00</itunes:duration>
+    <itunes:author>AI</itunes:author>
+  </item>
+  <item>
+    <title>2.看透買單的底層邏輯</title>
+    <description></description>
+    <enclosure url="https://drive.google.com/file/d/1H1fsJFdwPupTe1d3NZA6vrJVxmCjNFuN/view?usp=sharing" length="0" type="audio/mpeg"/>
+    <guid isPermaLink="false">https://drive.google.com/file/d/1H1fsJFdwPupTe1d3NZA6vrJVxmCjNFuN/view?usp=sharing</guid>
+    <pubDate>Fri, 17 Apr 2026 12:00:00 GMT</pubDate>
+    <itunes:duration>00:00:00</itunes:duration>
+    <itunes:author>AI</itunes:author>
+  </item>
+  <item>
+    <title>3.破解腦波弱的購物真相</title>
+    <description></description>
+    <enclosure url="https://drive.google.com/file/d/1cIyxO-itcB_nw5kSSSO963cSkzWelyPh/view?usp=sharing" length="0" type="audio/mpeg"/>
+    <guid isPermaLink="false">https://drive.google.com/file/d/1cIyxO-itcB_nw5kSSSO963cSkzWelyPh/view?usp=sharing</guid>
+    <pubDate>Fri, 17 Apr 2026 12:00:00 GMT</pubDate>
+    <itunes:duration>00:00:00</itunes:duration>
+    <itunes:author>AI</itunes:author>
+  </item>
+  </channel>
+</rss>
