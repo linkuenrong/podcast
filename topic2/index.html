@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Services Marketing</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; color: #1a1a1a; min-height: 100vh; }
+.player-wrap { max-width: 640px; margin: 0 auto; padding: 2rem 1rem; }
+.back-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: #666; text-decoration: none; margin-bottom: 1.25rem; }
+.back-link:hover { color: #1a1a1a; }
+.pod-header { display: flex; align-items: center; gap: 16px; margin-bottom: 1.5rem; }
+.pod-icon { width: 60px; height: 60px; border-radius: 14px; background: #fce7f3; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.pod-icon svg { width: 30px; height: 30px; }
+.pod-title { font-size: 18px; font-weight: 600; line-height: 1.3; }
+.pod-author { font-size: 13px; color: #666; margin-top: 3px; }
+.now-playing { background: #fff; border: 1px solid #e5e5e5; border-radius: 14px; padding: 1.25rem; margin-bottom: 1rem; }
+.np-label { font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+.np-title { font-size: 15px; font-weight: 500; margin-bottom: 14px; line-height: 1.4; min-height: 42px; }
+.progress-bar { width: 100%; height: 4px; accent-color: #db2777; cursor: pointer; }
+.time-row { display: flex; justify-content: space-between; font-size: 12px; color: #888; margin: 6px 0 14px; }
+.controls { display: flex; align-items: center; justify-content: center; gap: 24px; }
+.ctrl-btn { background: none; border: none; cursor: pointer; padding: 8px; color: #444; border-radius: 50%; font-size: 13px; display: flex; align-items: center; gap: 4px; }
+.ctrl-btn:hover { background: #f0f0f0; }
+.play-btn { width: 48px; height: 48px; border-radius: 50%; background: #db2777; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.play-btn:hover { background: #be185d; }
+.nav-btn { background: none; border: none; cursor: pointer; padding: 8px; color: #444; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.nav-btn:hover { background: #f0f0f0; }
+.nav-btn:disabled { opacity: 0.25; cursor: default; }
+.nav-btn:disabled:hover { background: none; }
+.speed-btn { background: #f0f0f0; border: none; border-radius: 6px; padding: 4px 8px; font-size: 12px; cursor: pointer; color: #444; }
+.speed-btn:hover { background: #e0e0e0; }
+.autoplay-btn { background: none; border: 1px solid #e5e5e5; border-radius: 6px; padding: 4px 10px; font-size: 12px; cursor: pointer; color: #aaa; }
+.autoplay-btn.on { background: #fdf2f8; border-color: #db2777; color: #db2777; }
+.ep-list { display: flex; flex-direction: column; gap: 8px; }
+.ep-item { background: #fff; border: 1px solid #e5e5e5; border-radius: 10px; padding: 12px 14px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: background 0.15s; }
+.ep-item:hover { background: #f9f9f9; }
+.ep-item.active { border-color: #db2777; background: #fdf2f8; }
+.ep-num { font-size: 12px; color: #aaa; min-width: 20px; text-align: center; }
+.ep-info { flex: 1; min-width: 0; }
+.ep-name { font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ep-date { font-size: 12px; color: #888; margin-top: 2px; }
+.msg { text-align: center; padding: 2rem; color: #888; font-size: 14px; }
+.err { color: #dc2626; font-size: 13px; margin-top: 8px; line-height: 1.6; text-align: left; background: #fef2f2; border-radius: 8px; padding: 10px 14px; }
+</style>
+</head>
+<body>
+<div class="player-wrap">
+  <a class="back-link" href="../">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    回首頁
+  </a>
+
+  <div class="pod-header">
+    <div class="pod-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#be185d" stroke-width="1.5">
+        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+      </svg>
+    </div>
+    <div>
+      <div class="pod-title" id="pod-title">Services Marketing</div>
+      <div class="pod-author" id="pod-author"></div>
+    </div>
+  </div>
+
+  <div class="now-playing">
+    <div class="np-label">正在播放</div>
+    <div class="np-title" id="np-title">請選擇一集開始收聽</div>
+    <input type="range" class="progress-bar" id="progress" value="0" min="0" max="100" step="1" oninput="seek(this.value)">
+    <div class="time-row">
+      <span id="cur-time">0:00</span>
+      <span id="dur-time">0:00</span>
+    </div>
+    <div class="controls">
+      <button class="nav-btn" id="prev-btn" onclick="prevEp()" title="上一集">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="19,20 9,12 19,4"/><line x1="5" y1="4" x2="5" y2="20"/></svg>
+      </button>
+      <button class="ctrl-btn" onclick="skip(-15)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 .49-4.28"/></svg>
+        15
+      </button>
+      <button class="play-btn" onclick="togglePlay()">
+        <svg id="play-icon" width="22" height="22" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg>
+      </button>
+      <button class="ctrl-btn" onclick="skip(15)">
+        15
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-.49-4.28"/></svg>
+      </button>
+      <button class="nav-btn" id="next-btn" onclick="nextEp()" title="下一集">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="5,4 15,12 5,20"/><line x1="19" y1="4" x2="19" y2="20"/></svg>
+      </button>
+    </div>
+    <div style="display:flex;justify-content:center;gap:10px;margin-top:10px;">
+      <button class="speed-btn" onclick="cycleSpeed()" id="speed-btn">1x</button>
+      <button class="autoplay-btn on" onclick="toggleAutoplay()" id="autoplay-btn">連續播放 開</button>
+    </div>
+  </div>
+
+  <div class="ep-list" id="ep-list">
+    <div class="msg">載入集數中...</div>
+  </div>
+</div>
+
+<audio id="audio"></audio>
+
+<script>
+const audio = document.getElementById('audio');
+const speeds = [1, 1.25, 1.5, 2];
+let speedIdx = 0, episodes = [], currentIdx = -1, autoplay = true;
+
+async function loadFeed() {
+  try {
+    const res = await fetch('feed.xml', { cache: 'no-cache' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const text = await res.text();
+    const xml = new DOMParser().parseFromString(text, 'text/xml');
+    if (xml.querySelector('parsererror')) throw new Error('XML 格式錯誤');
+    const ch = xml.querySelector('channel');
+    const title = ch.querySelector('title')?.textContent || 'Services Marketing';
+    document.getElementById('pod-title').textContent = title;
+    document.title = title;
+    document.getElementById('pod-author').textContent =
+      ch.querySelector('author')?.textContent || '';
+    const items = [...xml.querySelectorAll('item')];
+    if (!items.length) {
+      document.getElementById('ep-list').innerHTML = '<div class="msg">尚未有集數</div>';
+      return;
+    }
+    episodes = items.map((el, i) => ({
+      title: el.querySelector('title')?.textContent || 'Episode ' + (i+1),
+      url:   el.querySelector('enclosure')?.getAttribute('url') || '',
+      date:  el.querySelector('pubDate')?.textContent || ''
+    }));
+    renderList();
+    updateNavBtns();
+  } catch (e) {
+    document.getElementById('ep-list').innerHTML =
+      '<div class="msg"><div class="err">載入失敗：' + e.message + '</div></div>';
+  }
+}
+
+function renderList() {
+  document.getElementById('ep-list').innerHTML = episodes.map((ep, i) => `
+    <div class="ep-item ${i===currentIdx?'active':''}" onclick="playEp(${i})">
+      <div class="ep-num">${i+1}</div>
+      <div class="ep-info">
+        <div class="ep-name">${ep.title}</div>
+        <div class="ep-date">${ep.date ? new Date(ep.date).toLocaleDateString('zh-TW') : ''}</div>
+      </div>
+    </div>`).join('');
+}
+
+function playEp(idx) {
+  currentIdx = idx;
+  document.getElementById('np-title').textContent = episodes[idx].title;
+  audio.src = episodes[idx].url;
+  audio.playbackRate = speeds[speedIdx];
+  audio.play();
+  setIcon(true);
+  renderList();
+  updateNavBtns();
+}
+
+function prevEp() { if (currentIdx > 0) playEp(currentIdx - 1); }
+function nextEp() { if (currentIdx < episodes.length - 1) playEp(currentIdx + 1); }
+
+function updateNavBtns() {
+  document.getElementById('prev-btn').disabled = currentIdx <= 0;
+  document.getElementById('next-btn').disabled = currentIdx >= episodes.length - 1;
+}
+
+function toggleAutoplay() {
+  autoplay = !autoplay;
+  const btn = document.getElementById('autoplay-btn');
+  btn.textContent = '連續播放 ' + (autoplay ? '開' : '關');
+  btn.classList.toggle('on', autoplay);
+}
+
+function togglePlay() {
+  if (!audio.src) return;
+  audio.paused ? (audio.play(), setIcon(true)) : (audio.pause(), setIcon(false));
+}
+
+function setIcon(p) {
+  document.getElementById('play-icon').innerHTML = p
+    ? '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>'
+    : '<polygon points="5,3 19,12 5,21"/>';
+}
+
+function skip(s) { audio.currentTime = Math.max(0, (audio.currentTime||0) + s); }
+
+function cycleSpeed() {
+  speedIdx = (speedIdx+1) % speeds.length;
+  audio.playbackRate = speeds[speedIdx];
+  document.getElementById('speed-btn').textContent = speeds[speedIdx] + 'x';
+}
+
+function fmtTime(s) {
+  s = Math.floor(s||0);
+  return Math.floor(s/60) + ':' + String(s%60).padStart(2,'0');
+}
+
+function seek(v) { if (audio.duration) audio.currentTime = (v/100)*audio.duration; }
+
+audio.addEventListener('timeupdate', () => {
+  const pct = audio.duration ? Math.round((audio.currentTime/audio.duration)*100) : 0;
+  document.getElementById('progress').value = pct;
+  document.getElementById('cur-time').textContent = fmtTime(audio.currentTime);
+  document.getElementById('dur-time').textContent = fmtTime(audio.duration);
+});
+
+audio.addEventListener('ended', () => {
+  setIcon(false);
+  if (autoplay && currentIdx < episodes.length-1) playEp(currentIdx+1);
+});
+
+loadFeed();
+</script>
+</body>
+</html>
