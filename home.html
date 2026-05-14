@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>私人播客</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; color: #1a1a1a; min-height: 100vh; }
+.wrap { max-width: 640px; margin: 0 auto; padding: 2.5rem 1rem; }
+.site-title { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+.site-sub { font-size: 14px; color: #888; margin-bottom: 2rem; }
+.section-label { font-size: 11px; color: #aaa; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 12px; }
+.topics { display: flex; flex-direction: column; gap: 12px; }
+.topic-card { background: #fff; border: 1px solid #e5e5e5; border-radius: 14px; padding: 1.25rem; text-decoration: none; color: inherit; display: flex; align-items: center; gap: 16px; transition: box-shadow 0.15s, transform 0.15s; }
+.topic-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); transform: translateY(-1px); }
+.topic-icon { width: 52px; height: 52px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.topic-icon.blue { background: #dbeafe; }
+.topic-icon.pink { background: #fce7f3; }
+.topic-info { flex: 1; min-width: 0; }
+.topic-name { font-size: 15px; font-weight: 600; line-height: 1.3; margin-bottom: 4px; }
+.topic-desc { font-size: 13px; color: #888; }
+.topic-arrow { color: #ccc; flex-shrink: 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="site-title">🎙️ 私人播客</div>
+  <div class="site-sub">選擇主題開始收聽</div>
+
+  <div class="section-label">所有主題</div>
+  <div class="topics">
+
+    <a class="topic-card" href="./index_peak.html">
+      <div class="topic-icon blue">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="1.5">
+          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+          <path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/>
+        </svg>
+      </div>
+      <div class="topic-info">
+        <div class="topic-name">峰值體驗2</div>
+        <div class="topic-desc">各章節語音探索</div>
+      </div>
+      <svg class="topic-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18l6-6-6-6"/></svg>
+    </a>
+
+    <a class="topic-card" href="./topic2/">
+      <div class="topic-icon pink">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#be185d" stroke-width="1.5">
+          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+        </svg>
+      </div>
+      <div class="topic-info">
+        <div class="topic-name">Services Marketing</div>
+        <div class="topic-desc">People, Technology, Strategy</div>
+      </div>
+      <svg class="topic-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18l6-6-6-6"/></svg>
+    </a>
+
+  </div>
+</div>
+</body>
+</html>
