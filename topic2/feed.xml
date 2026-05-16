@@ -133,15 +133,6 @@
       <guid isPermaLink="false">https://linkuenrong.github.io/podcast/topic2/S15.mp3</guid>
       <pubDate>Thu, 14 May 2026 12:00:00 GMT</pubDate>
       <itunes:author>AI</itunes:author>
-    </item>
-    <item>
-      <title>To be continue..</title>
-      <description></description>
-      <enclosure url="" length="0" type="audio/mpeg"/>
-      <guid isPermaLink="false"></guid>
-      <pubDate>Thu, 14 May 2026 12:00:00 GMT</pubDate>
-      <itunes:author>AI</itunes:author>
-    </item>
-
+    </item>   
   </channel>
 </rss>
