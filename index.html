@@ -15,8 +15,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .topic-card { background: #fff; border: 1px solid #e5e5e5; border-radius: 14px; padding: 1.25rem; text-decoration: none; color: inherit; display: flex; align-items: center; gap: 16px; transition: box-shadow 0.15s, transform 0.15s; }
 .topic-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); transform: translateY(-1px); }
 .topic-icon { width: 52px; height: 52px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.topic-icon.blue { background: #dbeafe; }
-.topic-icon.pink { background: #fce7f3; }
+.topic-icon.blue  { background: #dbeafe; }
+.topic-icon.pink  { background: #fce7f3; }
+.topic-icon.amber { background: #fef3c7; }
 .topic-info { flex: 1; min-width: 0; }
 .topic-name { font-size: 15px; font-weight: 600; line-height: 1.3; margin-bottom: 4px; }
 .topic-desc { font-size: 13px; color: #888; }
@@ -55,6 +56,20 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
       <div class="topic-info">
         <div class="topic-name">Services Marketing</div>
         <div class="topic-desc">People, Technology, Strategy</div>
+      </div>
+      <svg class="topic-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18l6-6-6-6"/></svg>
+    </a>
+
+    <a class="topic-card" href="./topic3/">
+      <div class="topic-icon amber">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="1.5">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+          <path d="M12 6v6l4 2"/>
+        </svg>
+      </div>
+      <div class="topic-info">
+        <div class="topic-name">餐飲店的賺錢數字</div>
+        <div class="topic-desc">各章節語音探索</div>
       </div>
       <svg class="topic-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18l6-6-6-6"/></svg>
     </a>
