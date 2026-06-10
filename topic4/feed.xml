@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+  xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
+  <channel>
+    <title>價值主張年代</title>
+    <description>價值主張年代各章節語音探索</description>
+    <language>zh-tw</language>
+    <author>AI</author>
+    <link>https://linkuenrong.github.io/podcast/topic4/feed.xml</link>
+    <itunes:author>AI</itunes:author>
+    <itunes:explicit>false</itunes:explicit>
+
+    <item>
+      <title>1.價值主張圖：價值主張圖切中痛點</title>
+      <description></description>
+      <enclosure url="https://linkuenrong.github.io/podcast/topic4/V1.mp3" length="0" type="audio/mpeg"/>
+      <guid isPermaLink="false">https://linkuenrong.github.io/podcast/topic4/V1.mp3</guid>
+      <pubDate>Wed, 27 May 2026 12:00:00 GMT</pubDate>
+      <itunes:author>AI</itunes:author>
+    </item>
+
+    <item>
+      <title>2.設計與運作流程：愛上問題而非產品</title>
+      <description></description>
+      <enclosure url="https://linkuenrong.github.io/podcast/topic4/V2.mp3" length="0" type="audio/mpeg"/>
+      <guid isPermaLink="false">https://linkuenrong.github.io/podcast/topic4/V2.mp3</guid>
+      <pubDate>Wed, 27 May 2026 12:00:00 GMT</pubDate>
+      <itunes:author>AI</itunes:author>
+    </item>
+
+    <item>
+      <title>3.整合性工具：把好產品變成好生意</title>
+      <description></description>
+      <enclosure url="https://linkuenrong.github.io/podcast/topic4/V3.mp3" length="0" type="audio/mpeg"/>
+      <guid isPermaLink="false">https://linkuenrong.github.io/podcast/topic4/V3.mp3</guid>
+      <pubDate>Wed, 27 May 2026 12:00:00 GMT</pubDate>
+      <itunes:author>AI</itunes:author>
+    </item>
+
+    <item>
+      <title>4.應用價值：別做沒人要的完美產品</title>
+      <description></description>
+      <enclosure url="https://linkuenrong.github.io/podcast/topic4/V4.mp3" length="0" type="audio/mpeg"/>
+      <guid isPermaLink="false">https://linkuenrong.github.io/podcast/topic4/V4.mp3</guid>
+      <pubDate>Wed, 27 May 2026 12:00:00 GMT</pubDate>
+      <itunes:author>AI</itunes:author>
+    </item>
+
+    <item>
+      <title>5.專業能力與態度：別做沒人買單的完美產品</title>
+      <description></description>
+      <enclosure url="https://linkuenrong.github.io/podcast/topic4/V5.mp3" length="0" type="audio/mpeg"/>
+      <guid isPermaLink="false">https://linkuenrong.github.io/podcast/topic4/V5.mp3</guid>
+      <pubDate>Wed, 27 May 2026 12:00:00 GMT</pubDate>
+      <itunes:author>AI</itunes:author>
+    </item>
+
+   
+
+  </channel>
+</rss>
